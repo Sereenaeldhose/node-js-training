@@ -1,0 +1,30 @@
+// here 3 and 5 are set to default values.
+function sum(x = 3, y = 5) {
+  return x + y;
+}
+//if no param is passed while calling then x=3 and y = 5.
+console.log(sum());
+// only value for x is given, y=5.
+console.log(sum(5));
+// value for x and y is given.
+console.log(sum(8, 10));
+
+// instead of default values expression also acceptable here
+function sum1(x = 10, y = x, z = x + y) {
+  return x + y + z;
+}
+console.log(sum1());
+console.log(sum1(50));
+
+// calling a fn to default value
+const num = () => 15;
+const calculate = function (x, y = x * num()) {
+  return x + y;
+};
+const result = calculate(10);
+console.log(result);
+// if the value passed is undefined then it will take default values
+function sum2(x = 10) {
+  return x * 50;
+}
+console.log(sum2(undefined));

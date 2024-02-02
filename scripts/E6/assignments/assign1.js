@@ -5,7 +5,8 @@ var student1 = {
   startDate: "05-05-2014",
   endDate: "05-05-2018",
   grade: "A",
-  get getStudentData() {    // getStudentDate : function() {}   this is another way without using getter.
+  get studentData() {
+    // getStudentDate : function() {}   this is another way without using getter.
     return (
       "\n Student Details are : \n Roll No = " +
       student1.rollNo +
@@ -22,10 +23,10 @@ var student1 = {
       "\n"
     );
   },
-  getCourceAndDuration : function() {
+  getCourceAndDuration: function () {
     return `Selected course is ${this.course} with duration ${this.duration}`;
   },
-  get getCource() {
+  get cource() {
     return this.course;
   },
   set setRollNo(rollno) {
@@ -48,67 +49,74 @@ var student1 = {
   },
 };
 
-let student2 = new Object();
-student2 = student1;
+let student2 = Object.create(student1); // Object.assign({}, student1) also supported
 student2.setRollNo = 2;
+student2.getStudentData = function () {
+  return (
+    "\n Student Details are : \n Roll No = " +
+    student2.rollNo +
+    "\n Course = " +
+    student2.course +
+    "\n Duration = " +
+    student2.duration +
+    "\n Start Date = " +
+    student2.startDate +
+    "\n End Date = " +
+    student2.endDate +
+    "\n Grade = " +
+    student2.grade +
+    "\n"
+  );
+};
 
-console.log(student1.getStudentData);
-console.log(student2.getStudentData);
-console.log(`Selected Course is ${student1.getCource}`);
+console.log(`First ${student1.studentData}`);
+console.log(`Second ${student2.getStudentData()}`);
+console.log(`Selected course is ${student1.cource}`);
 console.log(student1.getCourceAndDuration());
-
 
 // -------- Comparing 2 Objects
 
-let student3 = new Object();
-student2.rollNo = 3;
-student2.course = "BCA";
-student2.duration = "3 Years";
-student2.dates = {
-  startDate: "05-05-2015",
-  endDate: "05-05-2018",
-};
-student2.grade = "A";
-student2.isLateralEntry = "No";
+let student3 = Object.assign(student1);
 
-let student4 = new Object();
-student3.rollNo = 3;
-student3.course = "BCA";
-student3.duration = "3 Years";
-student3.dates = {
-  startDate: "05-05-2015",
-  endDate: "05-05-2018",
-};
-student3.grade = "A";
-student3.isLateralEntry = "No";
+let student4 = Object.assign(student1);
+student4.address = { houseName: "house name", city: "city" };
+let student5 = Object.assign(student1);
+student5.address = { houseName: "house name", city: "city" };
 
-let comparision = (s2, s3) => {
-  if (s2.length != s3.length) {
-    return "No";
+let comparision = (s1, s2) => {
+  var keys1 = Object.keys(s1);
+  var keys2 = Object.keys(s2);
+  if (keys1.length != keys2.length) {
+    return false;
   }
-  if (!s2 instanceof Object || !s3 instanceof Object) {
-    return "No";
-  }
-  for (let i of Object.values(s2)) {
-    for (let j of  Object.values(s3)) {
-      if (typeof i != typeof j) {
-        console.log(" type mismatch");
-        return "No";
-      }
-      if (typeof i == "object" && typeof j == "object") {
-        comparision(i, j);
-      }
-      if (i != j) {
-        console.log(" not equal" + i , j);
-
-        return "No";
-      }
+  keys1.forEach((k) => {
+    if (!s1.hasOwnProperty(k) && !s2.hasOwnProperty(k)) {
+      return false;
     }
-  }
-  return "Yes";
+    if (typeof s1[k] === "object") {
+      comparision(s1[k], s2[k]);
+    } else if (s1[k] != s2[k]) {
+      return false;
+    }
+  });
+
+  return true;
 };
 
 console.log(
-  "Is the objects are same or any property of the  objects are same? " +
-    comparision(student1, student2)
+  `The given 2 objects are ${
+    comparision(student1, student2) == true ? "same" : "not same"
+  } `
+);
+
+console.log(
+  `The given 2 objects are ${
+    comparision(student1, student3) == true ? "same" : "not same"
+  } `
+);
+
+console.log(
+  `The given 2 objects are ${
+    comparision(student4, student5) == true ? "same" : "not same"
+  } `
 );

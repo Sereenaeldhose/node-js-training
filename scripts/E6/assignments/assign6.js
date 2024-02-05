@@ -20,7 +20,7 @@ printPersion(person);
 
  displayPerson = () =>{
    // const { name: fullName, age:age1, address: { city: current_city, country: nation = "India" } } = person  or 
-   const { name: fullName, age:age1, address: { city: current_city, country: nation = "USA" } } =  {
+   const { name,age, address: { city: current_city, country: nation = "USA" } } =  {
     name: "David",
     age: 30,
     address: {
@@ -29,7 +29,7 @@ printPersion(person);
     }
 }
     console.log(
-        `Person Info : \n Name = ${fullName} \n Age = ${age1} \n Address = \n City : ${current_city} \n Country : ${nation}`
+        `Person Info : \n Name = ${name} \n Age = ${age} \n Address = \n City : ${current_city} \n Country : ${nation}`
       );
 
  }

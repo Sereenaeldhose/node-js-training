@@ -34,3 +34,10 @@ printPersion(person);
 
  }
  displayPerson();
+
+ console.log("--------------------");
+ displayNameAndAge = ({name,age}) => 
+ {
+    console.log(`Name of the person is ${name} and he is ${age} years old`);
+ }
+ displayNameAndAge(person);

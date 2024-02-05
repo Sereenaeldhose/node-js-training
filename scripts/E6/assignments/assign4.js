@@ -46,33 +46,47 @@ let person1 = {
 };
 
 let student = {};
-
+var str = "Test string";
+let nullObj = null;
 let isEmpty = (obj3) => {
-  if (!obj3 instanceof Object) {
-    console.log("The given value is not an object or is empty/null!");
+  if (typeof obj3 != "object" || obj3 == null) {
+    return false;
   }
 
   if (Object.keys(obj3).length === 0) {
-    return false;
+    return true;
   }
-  return true;
+  return false;
 };
 
 console.log(
-  `${isEmpty(person1) == true ? "an empty" : "is not an empty"} object`
+  `The person1 is ${
+    isEmpty(person1) == true ? "not an object or an empty/null" : "not an empty"
+  } object`
 );
 console.log(
-  `${isEmpty(student) == true ? "an empty" : "is not an empty"} object`
+  `The student is ${
+    isEmpty(student) == true ? "not an object or an empty" : "not an empty"
+  } object`
 );
-
+console.log(
+  `The str is ${
+    isEmpty(str) == true ? "not an object or an empty" : "not an empty"
+  } object`
+);
+console.log(
+  `The nullObj is ${
+    isEmpty(nullObj) == true ? "not an object or an empty" : "not an empty"
+  } object`
+);
 // check for whether the variable having some value
 
-function checkForHavingValue(data, name) {
+checkForHavingValue = (data) => {
   if (!data) {
     return false;
   }
   return true;
-}
+};
 
 let data1 = "Hello Xmindians";
 let data2 = "";

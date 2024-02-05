@@ -19,15 +19,24 @@ console.log("--------------------");
 // convert and display indian rupees to different currencies.
 
 convert = (rupees) => {
-  console.log(
-    `Indian Rupees ${rupees} equivalent to different currencies : \nUS Doller = ${
-      rupees * 0.012
-    }\nBritish Pound = ${rupees * 0.0096}\nAustralian Doller =${
-      rupees * 0.019
-    }\nMexican Peso =${rupees * 0.21}`
-  );
+  let currencies = {
+    Rupees: rupees,
+    US_Doller: rupees * 0.012,
+    British_Pound: rupees * 0.0096,
+    Australian_Doller: rupees * 0.019,
+    Mexican_Peso: rupees * 0.21,
+  };
+  return currencies;
 };
 
-convert(50);
-console.log("--------------------");
-convert(5);
+const {
+  Rupees,
+  US_Doller: us_doller,
+  British_Pound: british_pound,
+  Australian_Doller: australian_doller,
+  Mexican_Peso: mexican_peso,
+} = convert(50);
+
+console.log(
+  `Indian Rupees ${Rupees} equivalent to different currencies : \nUS Doller = ${us_doller}\nBritish Pound = ${british_pound}\nAustralian Doller =${australian_doller}\nMexican Peso =${mexican_peso}`
+);

@@ -92,35 +92,58 @@ getOddNumbers = () => {
   return new Promise((success, failure) => {
     let limit = 50000;
     var odd_numbers = [];
-    for(i = 0; i<=limit ; i++){
-        if (i % 2 != 0) {
-            odd_numbers.push(i);
-        }
+    for (i = 0; i <= limit; i++) {
+      if (i % 2 != 0) {
+        odd_numbers.push(i);
+      }
     }
-    success(odd_numbers,limit);
+    success(odd_numbers);
   });
 };
 
 getSum = (numbers) => {
-    var sum = 0;
-    numbers.forEach(element => {
-        sum += element;
-        
-    });
-    return sum ;
-}
+  var sum = 0;
+  numbers.forEach((element) => {
+    sum += element;
+  });
+  return sum;
+};
 getOddNumbers()
   .then((odd_numbers) => getSum(odd_numbers))
-  .then((sum) => console.log(`Sum of Odd Numbers = ${sum}`));
+  .then((sum) => console.log(`Sum of Odd Numbers 1 = ${sum}`)); // no need for async when directly print o/p without assign to a variable.
 
+main1 = () => {
+  // do not wait for getting getOddNumbers() result. process rest of the code
+  let sum1 = getOddNumbers()
+    .then((odd_numbers) => getSum(odd_numbers))
+    .then((sum) => {
+      return `Sum of Odd Numbers 2 = ${sum}`;
+    });
+  console.log(sum1); // first execute this with no value. then will not process again
+};
 
-  // o/p will be
+main2 = async () => {
+  // wait for getting getOddNumbers() result then only process rest of the code after the .then block
+  let sum2 = await getOddNumbers()
+    .then((odd_numbers) => getSum(odd_numbers))
+    .then((sum) => {
+      return `Sum of Odd Numbers 3 = ${sum}`;
+    });
+  console.log(sum2);
+};
+
+main1();
+main2();
+
+// o/p will be
 
 // -----------------------------------
 // ++++++++++++++++++++++
 // immediate logging
+// Promise { <pending> }
 // this is then  success
 // asynchronous logging has val: 777
-// Sum of Odd Numbers = 625000000
+// Sum of Odd Numbers 1 = 625000000
+// Sum of Odd Numbers 3 = 625000000
 // foo and bar and bar again and again and again
 // Result = Value Matches

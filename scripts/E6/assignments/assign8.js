@@ -37,7 +37,7 @@ addPost = (post) => {
   });
 };
 
-getPosts = (posts) => {
+getPosts = () => {
   result = "";
   posts.forEach((element) => {
     result += `id = ${element.id} and title = ${element.title}\n`;
@@ -47,7 +47,7 @@ getPosts = (posts) => {
 
 main = async () => {
   let post = { id: 4, title: "D" };
-  await addPost(post).then((arrays) => getPosts(arrays));
+  await addPost(post).then(getPosts);
   console.log(result);
 };
 

@@ -1,7 +1,7 @@
 // async callback fn
 var array = [];
 addPost = async () => {
-  return new Promise((resolve) => {
+  return new  Promise((resolve) => {
     pushValues();
     console.log("Pushing to array completed..");
     resolve(array);
@@ -27,39 +27,41 @@ getPosts = () => {
   });
 };
 
-addPost().then(getPosts);
 
-// console.log("-------------- Invoking next function -------------");
+   addPost().then(getPosts);
 
-// // using asyn await function
 
-// let posts = [
-//   { id: 1, title: "A" },
-//   { id: 2, title: "B" },
-//   { id: 3, title: "C" },
-// ];
+   setTimeout(() =>{console.log("-------------- Invoking next function -------------")},300);
 
-// addPost1 = (post) => {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(function () {
-//       posts.push(post);
-//       resolve(posts);
-//     }, 300);
-//   });
-// };
+// using asyn await function
 
-// getPosts1 = () => {
-//   result = "";
-//   posts.forEach((element) => {
-//     result += `id = ${element.id} and title = ${element.title}\n`;
-//     return result;
-//   });
-// };
+let posts = [
+  { id: 1, title: "A" },
+  { id: 2, title: "B" },
+  { id: 3, title: "C" },
+];
 
-// main = async () => {
-//   let post = { id: 4, title: "D" };
-//   await addPost1(post).then(getPosts1);
-//   console.log(result);
-// };
+addPost1 = (post) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      posts.push(post);
+      resolve(posts);
+    }, 300);
+  });
+};
 
-// main();
+getPosts1 = () => {
+  result = "";
+  posts.forEach((element) => {
+    result += `id = ${element.id} and title = ${element.title}\n`;
+    return result;
+  });
+};
+
+main2 = async () => {
+  let post = { id: 4, title: "D" };
+  await addPost1(post).then(getPosts1);
+  console.log(result);
+};
+
+main2();

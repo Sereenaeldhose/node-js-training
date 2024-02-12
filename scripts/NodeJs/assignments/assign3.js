@@ -14,7 +14,7 @@ deleteAllFiles = (dirPath)=>{
         }
         files.forEach(file => {
            let filePath = path.join(dirPath,file);
-            if(!path.extname(filePath))
+            if(!path.extname(filePath) && fs.statSync(filePath).isDirectory())
            {
             deleteAllFiles(filePath);
            }

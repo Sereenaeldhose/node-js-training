@@ -1,0 +1,1 @@
+Hi, This is a sample file for copying content from one file to another file!

@@ -1,9 +1,8 @@
 
 const express = require("express");
-const bodyParser = require('body-parser');
-var urlEncoderParser =bodyParser.urlencoded({extended :false});
 const router = express.Router();
-
+// const bodyParser = require('body-parser');
+// var urlEncoderParser =bodyParser.urlencoded({extended :false});
 
 const employeeData = [
 	{
@@ -40,17 +39,19 @@ router.get('/getEmp', (req,res)=>{
 
 // add a new employee to the array
 
-router.post('/saveEmp', urlEncoderParser, (req,res)=>{
+router.post('/saveEmp',  (req,res)=>{
+    console.log(req.body);
+   
+    if(!req.body){
+        console.log("Invalid Request Payload...");
+        res.send("Invalid Request Payload");
+    }
     var data = {
         id: req.body.id,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         age: req.body.age
-    }
-    if(!data){
-        console.log("Invalid Request Payload...");
-        res.send("Invalid Request Payload");
-    }
+    };
     employeeData.push(data)
     res.send("Employee Details Added Successfully!");
 });

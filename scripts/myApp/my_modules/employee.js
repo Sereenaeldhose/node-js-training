@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
 const employeeRoute = require('../route/employeeRoute')
 
 
@@ -8,5 +9,5 @@ const employeeRoute = require('../route/employeeRoute')
   });
   
   app.use('/emp',employeeRoute);
-  
+  app.use(bodyParser.json());
 

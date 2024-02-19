@@ -30,7 +30,12 @@ const { dbhost, dbport, dbuser, dbpassword,database,dbdialect } = config.databas
  
 // init the Employee model and add it to the exported db object
 db.Employee = require('../models/employee')(sequelize, Sequelize);
+db.Profile = require('../models/profile')(sequelize, Sequelize);
+
+db.Employee.hasOne(db.Profile,);
+db.Profile.belongsTo(db.Employee);
+
 
 // sync all models with database
-sequelize.sync();
+sequelize.sync({alter : true});
 module.exports=db;

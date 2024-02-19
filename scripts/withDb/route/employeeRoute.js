@@ -25,6 +25,8 @@ empRouter.post("/create", async (req, res) => {
   }
 });
 
+// normal function call with route
+
 empRouter.get("/getEmp", async (req, res) => {
   try {
     const employee = await empController.getEmployee(req.query.id);
@@ -38,6 +40,9 @@ empRouter.get("/getEmp", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// another method to call the fn using route
+empRouter.get("/getEmp1", getEmployeeDetail);
 
 empRouter.get("/updateEmp", async (req, res) => {
   try {

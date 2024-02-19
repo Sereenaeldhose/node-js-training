@@ -1,5 +1,5 @@
 const path = require("node:path");
-const config = require('dotenv').config({ path: path.resolve(__dirname, '..', 'properties.env') });
+const config = require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 // module.exports = config;  -- need to take env values one by one whenever it is needed.
  
 

@@ -2,24 +2,19 @@ const db = require("../config/db");
 const Employee = db.Employee;
 
 async function getAllEmployees() {
-  const employees = await Employee.findAll();
-
-  return employees;
+  return await Employee.findAll();
 }
 
 async function getEmployee(id) {
-  console.log(id);
   return await Employee.findByPk(id);
 }
 
 async function createEmployee(emp) {
-  console.log(emp);
   await Employee.create(emp);
-  return getAllEmployees();
+  return getEmployee(emp.id);
 }
 
 async function updateEmployee(id, body) {
-    console.log("req == "+ body.id);
   var employee = await getEmployee(id);
   if (employee != null) {
     employee.set({
@@ -36,7 +31,6 @@ async function updateEmployee(id, body) {
 }
 
 async function deleteEmployee(id) {
-  console.log(id);
   const employee = await getEmployee(id);
   if (employee != null) {
     return await employee.destroy();

@@ -2,6 +2,7 @@ const db = require("../config/db");
 const Employee = db.Employee;
 const Company = db.Company;
 
+//------------------------------
 getAllEmployees = async (req, res) => {
   try {
     res.status(200).json({ employees: await Employee.findAll() });
@@ -10,6 +11,7 @@ getAllEmployees = async (req, res) => {
   }
 };
 
+//------------------------------
 getEmployeeDetail = async (req, res) => {
   try {
     res.status(200).json({ employee: await Employee.findByPk(req.query.id) });
@@ -18,6 +20,7 @@ getEmployeeDetail = async (req, res) => {
   }
 };
 
+//------------------------------
 getEmployeeWithCompany = async (req, res) => {
   try {
     res.status(200).json({
@@ -35,7 +38,8 @@ getEmployeeWithCompany = async (req, res) => {
   }
 };
 
-createEmployee = async (req, res) => {
+//------------------------------
+createEmployee = async ( req, res) => {
   try {
     await Employee.create({
       name: req.body.name,
@@ -52,6 +56,7 @@ createEmployee = async (req, res) => {
   }
 };
 
+//------------------------------
 updateEmployee = async (req, res) => {
   try {
     const emp = await Employee.findByPk(req.query.id);
@@ -75,6 +80,7 @@ updateEmployee = async (req, res) => {
   }
 };
 
+//------------------------------
 deleteEmployee = async (req, res) => {
   try {
     const emp = await Employee.findByPk(req.query.id);

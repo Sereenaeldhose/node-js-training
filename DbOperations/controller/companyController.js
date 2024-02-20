@@ -2,6 +2,7 @@ const db = require("../config/db");
 const Employee = db.Employee;
 const Company = db.Company;
 
+//------------------------------
 getAllCompanies = async (req, res) => {
   try {
     res.status(200).json({ companies: await Company.findAll() });
@@ -10,6 +11,7 @@ getAllCompanies = async (req, res) => {
   }
 };
 
+//------------------------------
 getAllCompaniesWithEmployees = async (req, res) => {
   try {
     res.status(200).json({
@@ -27,6 +29,7 @@ getAllCompaniesWithEmployees = async (req, res) => {
   }
 };
 
+//------------------------------
 getCompanyDetail = async (req, res) => {
   try {
     res.status(200).json({ company: await Company.findByPk(req.query.id) });
@@ -35,6 +38,7 @@ getCompanyDetail = async (req, res) => {
   }
 };
 
+//------------------------------
 createCompany = async (req, res) => {
   try {
     await Company.create({ name: req.body.name, status: req.body.status });
@@ -46,6 +50,7 @@ createCompany = async (req, res) => {
   }
 };
 
+//------------------------------
 createCompanyWithEmployees = async (req, res) => {
   try {
     const comp = await Company.create({
@@ -68,6 +73,7 @@ createCompanyWithEmployees = async (req, res) => {
   }
 };
 
+//------------------------------
 updateCompany = async (req, res) => {
   try {
     const comp = await Company.findByPk(req.query.id);
@@ -85,6 +91,7 @@ updateCompany = async (req, res) => {
   }
 };
 
+//------------------------------
 deleteCompany = async (req, res) => {
   try {
     const comp = await Company.findByPk(req.query.id);

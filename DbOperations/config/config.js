@@ -20,4 +20,7 @@ module.exports={
         acquire: process.env.ACQUIRE,
         idle: process.env.IDLE
       }
+      ,
+      secretKey : process.env.SECRETE_KEY,
+      jwtExpireTime : process.env.JWT_EXPIRE_TIME
 }

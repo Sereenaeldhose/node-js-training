@@ -2,36 +2,11 @@ const db = require("../config/db");
 const Employee = db.Employee;
 const Company = db.Company;
 
-getAllCompanies = async (req, res) => {
-  try {
-    res.status(200).json({ companies: await Company.findAll() });
-  } catch (error) {
-    res.status(500).send("Failed to Fetch Companies");
-  }
-};
-
 getAllEmployees = async (req, res) => {
   try {
     res.status(200).json({ employees: await Employee.findAll() });
   } catch (error) {
     res.status(500).send("Failed to Fetch Employees");
-  }
-};
-
-getAllCompaniesWithEmployees = async (req, res) => {
-  try {
-    res.status(200).json({
-      companies_with_employees: await Company.findAll({
-        include: [
-          {
-            model: Employee,
-            attributes: ["name", "email", "designation", "age"],
-          },
-        ],
-      }),
-    });
-  } catch (error) {
-    res.status(500).send("Failed to Fetch Companies With Employees");
   }
 };
 
@@ -49,42 +24,26 @@ getEmployeeWithCompany = async (req, res) => {
       employee: await Employee.findByPk(req.query.id, {
         include: [
           {
-            model: Profile,
-            attributes: ["status", "mobile"],
+            model: Company,
+            attributes: ["name", "status"],
           },
         ],
       }),
     });
   } catch (error) {
-    res.status(500).send("Failed to Fetch Employee Details");
+    res.status(500).send("Failed to Fetch Employee Details Including Company");
   }
 };
-
-getCompanyDetail = async (req, res) => {
-  try {
-    res.status(200).json({ company: await Company.findByPk(req.query.id) });
-  } catch (error) {
-    res.status(500).send("Failed to Fetch Employee Details");
-  }
-};
-
-
-createCompany = async (req, res) => {
-  try {
-  await Company.create({name:req.body.name, status:req.body.status}) ;
-
-    res.status(200).send("Successfully Created Company");
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Failed to Create Company");
-  }
-};
-
-
 
 createEmployee = async (req, res) => {
   try {
-  await Employee.create({name:req.body.name, email:req.body.email, designation:req.body.designation,age:req.body.age,companyId:req.body.companyId}) ;
+    await Employee.create({
+      name: req.body.name,
+      email: req.body.email,
+      designation: req.body.designation,
+      age: req.body.age,
+      companyId: req.body.companyId,
+    });
 
     res.status(200).send("Successfully Created Employee");
   } catch (error) {
@@ -93,10 +52,47 @@ createEmployee = async (req, res) => {
   }
 };
 
+updateEmployee = async (req, res) => {
+  try {
+    const emp = await Employee.findByPk(req.query.id);
+    if (emp.length > 0) {
+      await Employee.update(
+        {
+          name: req.body.name,
+          email: req.body.email,
+          designation: req.body.designation,
+          age: req.body.age,
+          companyId: req.body.companyId,
+        },
+        { where: { id: req.query.id } }
+      );
+      return res.status(200).send("Successfully Updated Employee");
+    }
+    return res.status(200).send("No Records Found to Update");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Failed to Update Employee");
+  }
+};
+
+deleteEmployee = async (req, res) => {
+  try {
+    const emp = await Employee.findByPk(req.query.id);
+    if (emp.length > 0) {
+      await Employee.destroy({ where: { id: req.query.id } });
+    }
+    return res.status(200).send("No Records Found to Destroy");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Failed to Destroy Employee");
+  }
+};
+
 module.exports = {
-  getAllCompanies,
-  getCompanyDetail,
   getAllEmployees,
   getEmployeeDetail,
-  getAllCompaniesWithEmployees,
+  getEmployeeWithCompany,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
 };

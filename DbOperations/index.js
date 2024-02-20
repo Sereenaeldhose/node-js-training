@@ -1,9 +1,12 @@
 const express = require("express");
 const app = new express();
 const config = require("./config/config");
-const router =  require("./route/employeeRoute");
+const empRouter =  require("./route/employeeRoute");
+const compRouter =  require("./route/companyRoute");
+
 app.use(express.json());
-app.use("/route",router);
+app.use("/emp",empRouter);
+app.use("/comp",compRouter);
 
 
 const port = config.port

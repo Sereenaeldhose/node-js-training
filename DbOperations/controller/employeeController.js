@@ -1,12 +1,14 @@
 const db = require("../config/db");
 const Employee = db.Employee;
 const Company = db.Company;
+const logger = require("../config/logger.js"); 
 
 //------------------------------
 getAllEmployees = async (req, res) => {
   try {
     res.status(200).json({ employees: await Employee.findAll() });
   } catch (error) {
+    logger.error("Failed to Fetch Employee ",error);
     res.status(500).send("Failed to Fetch Employees");
   }
 };
@@ -16,6 +18,8 @@ getEmployeeDetail = async (req, res) => {
   try {
     res.status(200).json({ employee: await Employee.findByPk(req.query.id) });
   } catch (error) {
+    logger.error("Failed to Fetch Employee Details",error);
+
     res.status(500).send("Failed to Fetch Employee Details");
   }
 };
@@ -34,6 +38,7 @@ getEmployeeWithCompany = async (req, res) => {
       }),
     });
   } catch (error) {
+    logger.error("Failed to Fetch Employee Details Including Company",error);
     res.status(500).send("Failed to Fetch Employee Details Including Company");
   }
 };
@@ -51,7 +56,7 @@ createEmployee = async ( req, res) => {
 
     res.status(200).send("Successfully Created Employee");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Create Employee",error);
     res.status(500).send("Failed to Create Employee");
   }
 };
@@ -75,7 +80,7 @@ updateEmployee = async (req, res) => {
     }
     return res.status(200).send("No Records Found to Update");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Update Employee",error);
     res.status(500).send("Failed to Update Employee");
   }
 };
@@ -89,7 +94,7 @@ deleteEmployee = async (req, res) => {
     }
     return res.status(200).send("No Records Found to Destroy");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Destroy Employee",error);
     res.status(500).send("Failed to Destroy Employee");
   }
 };

@@ -12,8 +12,11 @@ const { dbhost, dbport, dbuser, dbpassword,database,dbdialect } = config.databas
  // connect to db
  const sequelize = new Sequelize(database, dbuser, dbpassword, {
   host: dbhost,
-  dialect: dbdialect
+  dialect: dbdialect,
+  logging: false,
 });
+
+// check for db connectivity
 
 ( testDbConnection = async () => {
   try {

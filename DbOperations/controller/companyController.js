@@ -1,12 +1,13 @@
 const db = require("../config/db");
 const Employee = db.Employee;
 const Company = db.Company;
-
+const logger = require("../config/logger.js"); 
 //------------------------------
 getAllCompanies = async (req, res) => {
   try {
     res.status(200).json({ companies: await Company.findAll() });
   } catch (error) {
+    logger.error("Failed to Fetch Companies",error);
     res.status(500).send("Failed to Fetch Companies");
   }
 };
@@ -25,6 +26,7 @@ getAllCompaniesWithEmployees = async (req, res) => {
       }),
     });
   } catch (error) {
+    logger.error("Failed to Fetch Companies With Employees",error);
     res.status(500).send("Failed to Fetch Companies With Employees");
   }
 };
@@ -34,6 +36,7 @@ getCompanyDetail = async (req, res) => {
   try {
     res.status(200).json({ company: await Company.findByPk(req.query.id) });
   } catch (error) {
+    logger.error("Failed to Fetch Employee Details",error);
     res.status(500).send("Failed to Fetch Employee Details");
   }
 };
@@ -45,7 +48,7 @@ createCompany = async (req, res) => {
 
     res.status(200).send("Successfully Created Company");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Create Company",error);
     res.status(500).send("Failed to Create Company");
   }
 };
@@ -66,9 +69,10 @@ createCompanyWithEmployees = async (req, res) => {
         companyId: comp.id,
       });
     }
+    logger.info("Successfully Created Company With Given Employees");
     res.status(200).send("Successfully Created Company With Given Employees");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Create Company",error);
     res.status(500).send("Failed to Create Company");
   }
 };
@@ -86,7 +90,7 @@ updateCompany = async (req, res) => {
     }
     return res.status(200).send("No Records Found to Update");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Update Company",error);
     res.status(500).send("Failed to Update Company");
   }
 };
@@ -100,7 +104,7 @@ deleteCompany = async (req, res) => {
     }
     return res.status(200).send("No Records Found to Destroy");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Destroy Company",error);
     res.status(500).send("Failed to Destroy Company");
   }
 };

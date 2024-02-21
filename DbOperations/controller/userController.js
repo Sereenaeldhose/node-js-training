@@ -4,11 +4,13 @@ const User = db.User;
 const Role = db.Role;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const logger = require("../config/logger.js"); 
 
 getUserById = async (req, res) => {
   try {
     res.status(200).json({ project: await User.findByPk(req.query.id) });
   } catch (error) {
+    logger.error("Failed to Fetch User Details",error);
     res.status(500).send("Failed to Fetch User Details");
   }
 };
@@ -24,12 +26,14 @@ createUser = async (req, res) => {
     if (req.body.roleId) {
       const role = await Role.findByPk(req.body.roleId);
       user.setRoles(role);
+      logger.info("New User Created With Role "+ role.name);
     } else {
       user.setRoles(2); // default role
+      logger.info("New User Created With Role User ");
     }
     res.status(200).send("Successfully Created User");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Create User",error);
     res.status(500).send("Failed to Create User");
   }
 };
@@ -65,7 +69,7 @@ signIn = async (req, res) => {
       message: "Invalid Credentials!",
     });
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to SignIn",error);
     res.status(500).send("Failed to SignIn");
   }
 };

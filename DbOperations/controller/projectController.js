@@ -2,12 +2,14 @@ const db = require("../config/db");
 const Employee = db.Employee;
 const Company = db.Company;
 const Project = db.Project;
+const logger = require("../config/logger.js"); 
 
 //------------------------------
 getAllProjects = async (req, res) => {
   try {
     res.status(200).json({ projects: await Project.findAll() });
   } catch (error) {
+    logger.error("Failed to Fetch Projects",error);
     res.status(500).send("Failed to Fetch Projects");
   }
 };
@@ -26,6 +28,7 @@ getAllProjectWithEmployees = async (req, res) => {
       }),
     });
   } catch (error) {
+    logger.error("Failed to Fetch Projects With Employees",error);
     res.status(500).send("Failed to Fetch Projects With Employees");
   }
 };
@@ -35,6 +38,7 @@ getProjectById = async (req, res) => {
   try {
     res.status(200).json({ project: await Project.findByPk(req.query.id) });
   } catch (error) {
+    logger.error("Failed to Fetch Project",error);
     res.status(500).send("Failed to Fetch Project Details");
   }
 };
@@ -53,6 +57,7 @@ getProjectWithEmployees = async (req, res) => {
       }),
     });
   } catch (error) {
+    logger.error("Failed to Fetch Project With Employees ",error);
     res.status(500).send("Failed to Fetch Projects With Employees");
   }
 };
@@ -64,7 +69,7 @@ createProject = async (req, res) => {
 
     res.status(200).send("Successfully Created Project");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Create Project ",error);
     res.status(500).send("Failed to Create Project");
   }
 };
@@ -82,7 +87,7 @@ updateProject = async (req, res) => {
     }
     return res.status(200).send("No Records Found to Update");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Update Project ",error);
     res.status(500).send("Failed to Update Project");
   }
 };
@@ -96,7 +101,7 @@ deleteProject = async (req, res) => {
     }
     return res.status(200).send("No Records Found to Destroy");
   } catch (error) {
-    console.log(error);
+    logger.error("Failed to Destroy Project ",error);
     res.status(500).send("Failed to Destroy Project");
   }
 };
@@ -122,10 +127,10 @@ createProjectWithEmpAndCompany = async (req, res) => {
       });
       employee.addProject(project);
     }
-    res.status(200).send("Successfully Created Company With Given Employees");
+    res.status(200).send("Successfully Created Project With Given Employees");
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Failed to Create Company");
+    logger.error("Failed to Attache Employee to Project ",error);
+    res.status(500).send("Failed to Create Project");
   }
 };
 
@@ -140,6 +145,7 @@ attachEmployeesWithProject = async (req, res) => {
 
     res.status(200).send("Successfully Attached the Employees to the Project");
   } catch (error) {
+    logger.error("Failed to Attache Employee to Project ",error);
     res.status(500).send("Failed to Attache Employees to Project");
   }
 };

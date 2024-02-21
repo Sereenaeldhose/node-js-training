@@ -1,14 +1,15 @@
 const express = require("express");
 const empRouter = express.Router();
 const empController = require("../controller/employeeController");
+const { verifyToken, isAdmin } = require("../middleware/authorization");
 
-empRouter.get("/getAllEmployees", getAllEmployees);
-empRouter.get("/getEmp", getEmployeeDetail);
-empRouter.get("/getEmpWithComp", getEmployeeWithCompany);
+empRouter.get("/getAllEmployees", verifyToken, isAdmin, getAllEmployees);
+empRouter.get("/getEmp", verifyToken, getEmployeeDetail);
+empRouter.get("/getEmpWithComp", verifyToken, getEmployeeWithCompany);
 
-empRouter.post("/createEmp",createEmployee);
+empRouter.post("/createEmp", verifyToken, isAdmin, createEmployee);
 
-empRouter.put("/updateEmp", updateEmployee);
-empRouter.delete("/deleteEmp", deleteEmployee);
+empRouter.put("/updateEmp", verifyToken, isAdmin, updateEmployee);
+empRouter.delete("/deleteEmp", verifyToken, isAdmin, deleteEmployee);
 
 module.exports = empRouter;

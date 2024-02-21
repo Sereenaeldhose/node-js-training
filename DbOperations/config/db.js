@@ -33,12 +33,16 @@ db.Company = require('../models/company')(sequelize, Sequelize);
 db.Employee = require('../models/employee')(sequelize, Sequelize);
 db.Project = require('../models/project.js')(sequelize,Sequelize);
 db.User = require('../models/user.js')(sequelize,Sequelize);
+db.Role = require('../models/role.js')(sequelize,Sequelize);
 
 db.Company.hasMany(db.Employee, {foreignKey: 'companyId'});
 db.Employee.belongsTo(db.Company, {foreignKey: 'companyId'});
 
 db.Employee.belongsToMany(db.Project, { through: 'employee_project' });
 db.Project.belongsToMany(db.Employee, { through: 'employee_project' });
+
+db.User.belongsToMany(db.Role, { through: 'user_role' });
+db.Role.belongsToMany(db.User, { through: 'user_role' });
 
 // sync all models with database
 sequelize.sync({alter : true});

@@ -1,4 +1,5 @@
 const { body, validationResult } = require('express-validator')
+
 const userValidationRules = () => {
     console.log("Inside userValidationRules");
   return [
@@ -9,7 +10,6 @@ const userValidationRules = () => {
     // password must be at least 5 chars long
     body('password').isLength({ min: 5 }),
   ]
-
 }
 
 const validate = (req, res, next) => {

@@ -1,8 +1,9 @@
 const db = require("../config/db");
 const config = require("../config/config");
 const User = db.User;
+const Role = db.Role;
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 getUserById = async (req, res) => {
   try {
@@ -14,34 +15,55 @@ getUserById = async (req, res) => {
 
 createUser = async (req, res) => {
   try {
-    await User.create({
+    const user = await User.create({
       name: req.body.name,
       username: req.body.username,
       password: bcrypt.hashSync(req.body.password, 8),
       status: req.body.status,
     });
-
+    if (req.body.roleId) {
+      const role = await Role.findByPk(req.body.roleId);
+      user.setRoles(role);
+    } else {
+      user.setRoles(2); // default role
+    }
     res.status(200).send("Successfully Created User");
   } catch (error) {
     console.log(error);
     res.status(500).send("Failed to Create User");
   }
 };
-// { where: { username: req.body.username } }
+
+//---------------------
 signIn = async (req, res) => {
   try {
-    const user = await User.findOne({ where : {username : req.body.username}});
-    if (bcrypt.compareSync(req.body.password,user.password)) {
-    const tocken =  jwt.sign({ username: user.username },
-        config.secretKey,
-        {
-          algorithm: 'HS256',
-          allowInsecureKeySizes: true,
-          expiresIn: config.jwtExpireTime, // 24 hours
-        });
-      return res.status(200).send(`SignIn Success with tocken ${tocken}`);
+    const user = await User.findOne({ where: { username: req.body.username } });
+    if (bcrypt.compareSync(req.body.password, user.password)) {
+      const token = jwt.sign({ username: user.username }, config.secretKey, {
+        algorithm: "HS256",
+        allowInsecureKeySizes: true,
+        expiresIn: config.jwtExpireTime, // 24 hours
+      });
+
+      // Get user's roles and create an array of authorities
+      const authorities = [];
+      const roles = await user.getRoles();
+      for (const role of roles) {
+        authorities.push("ROLE_" + role.name.toUpperCase());
+      }
+
+      // Send the response with user details and token
+      return res.status(200).send({
+        id: user.id,
+        email: user.email,
+        roles: authorities,
+        accessToken: token,
+      });
     }
-    return res.status(500).send("Invalid Credentials");
+    return res.status(401).send({
+      accessToken: null,
+      message: "Invalid Credentials!",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Failed to SignIn");
